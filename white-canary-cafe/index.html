@@ -38,51 +38,31 @@
       color: #2C2C2C;
       padding-bottom: 80px;
     }
-
-    /* ── Glassmorphism ── */
     .glass {
-      background: rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.38);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255,255,255,0.35);
+      border: 1px solid rgba(255,255,255,0.15);
     }
-
-    /* ── Gold divider ── */
     .gold-divider {
       height: 1px;
       background: linear-gradient(90deg, transparent, #C8A96E, transparent);
     }
-
-    /* ── Hero ── */
+    /* Hero uses the real cafe cover photo */
     .hero-bg {
-      /* 
-        SWAP IN YOUR OWN IMAGE:
-        Replace the gradient below with:
-        background-image: url('YOUR_IMAGE_URL_HERE');
-        background-size: cover;
-        background-position: center;
-      */
-      background: linear-gradient(
-        135deg,
-        #3d2b1f 0%,
-        #6b4c35 25%,
-        #8d6748 40%,
-        #c9a37a 55%,
-        #f0d9bc 70%,
-        #f5e9d8 85%,
-        #fdf6ee 100%
-      );
+      background-image: url('https://www.thegreatsabatini.com/wp-content/uploads/2024/07/202311-the-white-canary-cafe-cover1-3275886-e1752067770922-1024x515-895x400.jpg');
+      background-size: cover;
+      background-position: center top;
       position: relative;
       overflow: hidden;
     }
-    .hero-bg::before {
+    .hero-bg::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C8A96E' fill-opacity='0.06'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.08) 100%);
     }
-
-    /* ── Tab underline ── */
+    .hero-content { position: relative; z-index: 2; }
     .tab-btn {
       position: relative;
       font-size: 0.7rem;
@@ -104,8 +84,6 @@
     }
     .tab-btn.active { color: #2C2C2C; }
     .tab-btn.active::after { transform: scaleX(1); }
-
-    /* ── Menu card ── */
     .menu-card {
       background: #fff;
       border: 1px solid #E8E4DE;
@@ -114,8 +92,12 @@
     }
     .menu-card:active { transform: scale(0.98); }
     .menu-card:hover  { box-shadow: 0 8px 32px rgba(44,44,44,0.10); }
-
-    /* ── Location toggle ── */
+    .menu-thumb {
+      width: 72px; height: 72px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
     .loc-btn {
       flex: 1;
       text-align: center;
@@ -128,15 +110,8 @@
       transition: all 0.25s;
       cursor: pointer;
     }
-    .loc-btn.active {
-      background: #2C2C2C;
-      color: #FAF8F4;
-    }
-    .loc-btn.inactive {
-      color: #7A7269;
-    }
-
-    /* ── Quick action buttons ── */
+    .loc-btn.active  { background: #2C2C2C; color: #FAF8F4; }
+    .loc-btn.inactive{ color: #7A7269; }
     .action-btn {
       display: flex;
       flex-direction: column;
@@ -148,13 +123,11 @@
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s;
       cursor: pointer;
       text-decoration: none;
     }
     .action-btn:active { transform: scale(0.95); }
-
-    /* ── Sticky footer btn ── */
     .sticky-order {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -163,8 +136,6 @@
       border-top: 1px solid #E8E4DE;
       padding: 12px 20px;
     }
-
-    /* ── Animations ── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(22px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -174,92 +145,85 @@
     .delay-2 { animation-delay: 0.3s; }
     .delay-3 { animation-delay: 0.45s; }
     .delay-4 { animation-delay: 0.6s; }
-
-    /* ── Section fade-in on scroll ── */
     .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .reveal.visible { opacity: 1; transform: none; }
-
-    /* ── Scrollbar ── */
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .wa-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: #25D366; color: white;
+      border-radius: 50px; padding: 4px 10px;
+      font-size: 10px; font-weight: 600;
+      font-family: 'Montserrat', sans-serif;
+      transition: transform 0.2s;
+      border: none; cursor: pointer;
+    }
+    .wa-btn:active { transform: scale(0.95); }
+    .map-frame { border: 0; border-radius: 14px; width: 100%; height: 175px; }
+    /* Instagram strip photo tiles */
+    .ig-tile {
+      width: 100px; height: 100px;
+      border-radius: 16px;
+      flex-shrink: 0;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+    }
   </style>
 </head>
 <body class="max-w-md mx-auto relative">
 
-  <!-- ══════════════════════════════
-       HERO
-  ═══════════════════════════════ -->
-  <section class="hero-bg min-h-[92vw] max-h-[520px] flex items-end" style="min-height: min(92vw, 520px);">
-
-    <!-- Decorative canary silhouette (SVG) -->
-    <div class="absolute top-10 right-8 opacity-20">
-      <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- ══════════════════════════════  HERO  ══════════════════════════════ -->
+  <section class="hero-bg flex items-end" style="min-height:min(92vw,520px);max-height:520px;">
+    <!-- Canary SVG -->
+    <div class="absolute top-10 right-8 opacity-25 hero-content">
+      <svg width="48" height="48" viewBox="0 0 56 56" fill="none">
         <ellipse cx="28" cy="30" rx="14" ry="12" fill="#C8A96E"/>
-        <ellipse cx="28" cy="16" rx="9" ry="9" fill="#C8A96E"/>
+        <ellipse cx="28" cy="16" rx="9"  ry="9"  fill="#C8A96E"/>
         <path d="M22 26 Q16 32 10 36" stroke="#C8A96E" stroke-width="2.5" stroke-linecap="round"/>
         <path d="M34 26 Q40 32 46 36" stroke="#C8A96E" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M24 38 Q28 46 32 38" stroke="#C8A96E" stroke-width="2" stroke-linecap="round"/>
+        <path d="M24 38 Q28 46 32 38" stroke="#C8A96E" stroke-width="2"   stroke-linecap="round"/>
         <circle cx="24" cy="13" r="2" fill="#3d2b1f"/>
         <path d="M19 16 L15 14 L18 17" fill="#C8A96E"/>
       </svg>
     </div>
-
-    <!-- Image placeholder label -->
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center opacity-30 pointer-events-none">
-      <div class="text-cream/60 font-sans text-xs tracking-widest uppercase">Hero Image</div>
-      <div class="text-cream/40 font-sans text-[10px] mt-1">1080 × 1080 recommended</div>
-    </div>
-
-    <!-- Glassmorphism overlay -->
-    <div class="glass mx-4 mb-6 px-6 py-5 rounded-2xl w-full fade-up">
-      <p class="font-sans text-[10px] tracking-[0.18em] uppercase text-gold mb-1 fade-up delay-1">Dhaka's finest</p>
+    <!-- Glass card -->
+    <div class="hero-content glass mx-4 mb-6 px-6 py-5 rounded-2xl w-full fade-up">
+      <p class="font-sans text-[10px] tracking-[0.18em] uppercase text-gold mb-1 fade-up delay-1">Dhaka's finest brunch</p>
       <h1 class="font-serif text-3xl font-bold text-white leading-tight fade-up delay-2">
         Breakfast<br/><em class="font-normal">&amp; Beyond</em>
       </h1>
-      <p class="font-sans text-xs text-white/70 mt-2 tracking-wide fade-up delay-3">
-        Crafted with love, served with grace
-      </p>
+      <p class="font-sans text-xs text-white/70 mt-2 tracking-wide fade-up delay-3">Award-winning café · Gulshan-2 &amp; Tejgaon</p>
     </div>
   </section>
 
-  <!-- ══════════════════════════════
-       WORDMARK
-  ═══════════════════════════════ -->
+  <!-- ══════════════════════════════  WORDMARK  ══════════════════════════════ -->
   <div class="text-center pt-7 pb-2 fade-up delay-4">
-    <p class="font-sans text-[9px] tracking-[0.3em] uppercase text-gold mb-0.5">Est. 2019</p>
+    <p class="font-sans text-[9px] tracking-[0.3em] uppercase text-gold mb-0.5">Est. 2017 · Gulshan, Dhaka</p>
     <h2 class="font-serif text-2xl font-semibold text-charcoal">The White Canary</h2>
     <p class="font-sans text-[10px] tracking-[0.2em] uppercase text-warm-gray mt-0.5">Cafe &amp; Patisserie</p>
   </div>
 
   <div class="gold-divider mx-8 my-4"></div>
 
-  <!-- ══════════════════════════════
-       QUICK ACTIONS
-  ═══════════════════════════════ -->
-  <section class="px-4 mb-6 reveal" id="sec-actions">
+  <!-- ══════════════════════════════  QUICK ACTIONS  ══════════════════════════════ -->
+  <section class="px-4 mb-6 reveal">
     <div class="grid grid-cols-3 gap-3">
-
-      <!-- View Menu -->
       <a href="#menu" class="action-btn bg-charcoal text-cream shadow-lg shadow-charcoal/20">
         <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h10M4 18h7"/>
         </svg>
         View Menu
       </a>
-
-      <!-- Order on WhatsApp -->
       <a href="https://wa.me/8801709642004?text=Hi!%20I'd%20like%20to%20place%20an%20order%20from%20The%20White%20Canary%20Cafe."
-         target="_blank"
-         class="action-btn text-charcoal shadow-lg shadow-gold/20"
-         style="background: linear-gradient(135deg,#C8A96E,#E2C98A);">
+         target="_blank" class="action-btn text-charcoal shadow-lg shadow-gold/20"
+         style="background:linear-gradient(135deg,#C8A96E,#E2C98A);">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
           <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
         </svg>
         WhatsApp
       </a>
-
-      <!-- Find Us -->
       <a href="#locations" class="action-btn border-2 border-gold text-charcoal shadow-md">
         <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7-6.686-7-11A7 7 0 0 1 19 10c0 4.314-7 11-7 11z"/>
@@ -267,42 +231,36 @@
         </svg>
         Find Us
       </a>
-
     </div>
   </section>
 
   <div class="gold-divider mx-8 my-2"></div>
 
-  <!-- ══════════════════════════════
-       INTERACTIVE MENU
-  ═══════════════════════════════ -->
+  <!-- ══════════════════════════════  MENU  ══════════════════════════════ -->
   <section id="menu" class="px-4 pt-6 reveal">
     <p class="font-sans text-[9px] tracking-[0.25em] uppercase text-gold mb-1">Explore</p>
     <h3 class="font-serif text-xl font-semibold text-charcoal mb-4">Our Menu</h3>
 
-    <!-- Tabs -->
-    <div class="flex gap-5 overflow-x-auto hide-scrollbar border-b border-light-gray mb-5 pb-0">
+    <div class="flex gap-5 overflow-x-auto hide-scrollbar border-b border-light-gray mb-5">
       <button class="tab-btn active" onclick="switchTab('breakfast', this)">All Day Breakfast</button>
       <button class="tab-btn" onclick="switchTab('coffee', this)">Handcrafted Coffee</button>
       <button class="tab-btn" onclick="switchTab('desserts', this)">Desserts</button>
     </div>
 
-    <!-- ── Tab: Breakfast ── -->
+    <!-- Breakfast Tab -->
     <div id="tab-breakfast" class="tab-panel space-y-3">
 
       <div class="menu-card flex gap-3 p-3.5 items-center">
-        <!-- Image placeholder: replace bg with: background-image: url('...') -->
-        <div class="rounded-xl flex-shrink-0 flex items-center justify-center text-[8px] text-warm-gray/50 uppercase tracking-widest font-sans"
-             style="width:72px;height:72px;background:linear-gradient(135deg,#f0e8d8,#e8dcc8);">
-          Photo
+        <div class="menu-thumb" style="background:linear-gradient(135deg,#3a1f5c,#9b6bd6);">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.3"><circle cx="12" cy="10" r="6"/><path stroke-linecap="round" d="M8 16c0-2 2-4 4-4s4 2 4 4"/><path stroke-linecap="round" d="M5 20h14"/></svg>
         </div>
         <div class="flex-1 min-w-0">
-          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Fluffy Ricotta Pancakes</h4>
-          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Maple syrup, fresh berries, whipped cream</p>
+          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Blueberry Buttermilk Pancakes</h4>
+          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Double-layer fluffy, blueberry sauce &amp; secret cream cheese</p>
           <div class="flex items-center justify-between mt-2">
-            <span class="font-sans text-sm font-600 text-gold">৳ 480</span>
-            <button onclick="addToWhatsApp('Fluffy Ricotta Pancakes', 480)" class="flex items-center gap-1.5 bg-[#25D366] text-white rounded-full px-3 py-1 text-[10px] font-semibold font-sans transition-transform active:scale-95">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            <span class="font-sans text-sm font-600 text-gold">৳ 475</span>
+            <button class="wa-btn" onclick="addToWhatsApp('Blueberry Buttermilk Pancakes', 475)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
               Add
             </button>
           </div>
@@ -310,58 +268,54 @@
       </div>
 
       <div class="menu-card flex gap-3 p-3.5 items-center">
-        <div class="rounded-xl flex-shrink-0 flex items-center justify-center text-[8px] text-warm-gray/50 uppercase tracking-widest font-sans"
-             style="width:72px;height:72px;background:linear-gradient(135deg,#ede0ce,#d9c9b2);">
-          Photo
+        <div class="menu-thumb" style="background:linear-gradient(135deg,#b86328,#f0c070);">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.3"><ellipse cx="12" cy="14" rx="7" ry="4"/><circle cx="12" cy="10" r="3"/><path stroke-linecap="round" d="M5 18h14"/></svg>
         </div>
         <div class="flex-1 min-w-0">
-          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Eggs Benedict</h4>
-          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Smoked salmon, hollandaise, toasted brioche</p>
+          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Salmon Eggs Benedict</h4>
+          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Smoked Atlantic salmon, poached egg, croissant, hollandaise</p>
+          <div class="flex items-center justify-between mt-2">
+            <span class="font-sans text-sm font-600 text-gold">৳ 990</span>
+            <button class="wa-btn" onclick="addToWhatsApp('Salmon Eggs Benedict', 990)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card flex gap-3 p-3.5 items-center">
+        <div class="menu-thumb" style="background:linear-gradient(135deg,#6b3a12,#c87840);">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.3"><rect x="3" y="9" width="18" height="7" rx="3"/><path stroke-linecap="round" d="M7 9V7M12 9V5M17 9V7"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Fried Chicken Waffle</h4>
+          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Crispy Belgian waffle, fried chicken, maple syrup drizzle</p>
           <div class="flex items-center justify-between mt-2">
             <span class="font-sans text-sm font-600 text-gold">৳ 560</span>
-            <button onclick="addToWhatsApp('Eggs Benedict', 560)" class="flex items-center gap-1.5 bg-[#25D366] text-white rounded-full px-3 py-1 text-[10px] font-semibold font-sans transition-transform active:scale-95">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            <button class="wa-btn" onclick="addToWhatsApp('Fried Chicken Waffle', 560)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
               Add
             </button>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="menu-card flex gap-3 p-3.5 items-center">
-        <div class="rounded-xl flex-shrink-0 flex items-center justify-center text-[8px] text-warm-gray/50 uppercase tracking-widest font-sans"
-             style="width:72px;height:72px;background:linear-gradient(135deg,#e8dfd2,#d5c9b8);">
-          Photo
-        </div>
-        <div class="flex-1 min-w-0">
-          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Avocado Toast Supreme</h4>
-          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Sourdough, poached egg, dukkah, microgreens</p>
-          <div class="flex items-center justify-between mt-2">
-            <span class="font-sans text-sm font-600 text-gold">৳ 420</span>
-            <button onclick="addToWhatsApp('Avocado Toast Supreme', 420)" class="flex items-center gap-1.5 bg-[#25D366] text-white rounded-full px-3 py-1 text-[10px] font-semibold font-sans transition-transform active:scale-95">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-              Add
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /tab-breakfast -->
-
-    <!-- ── Tab: Coffee ──  -->
+    <!-- Coffee Tab -->
     <div id="tab-coffee" class="tab-panel space-y-3 hidden">
 
       <div class="menu-card flex gap-3 p-3.5 items-center">
-        <div class="rounded-xl flex-shrink-0 flex items-center justify-center text-[8px] text-warm-gray/50 uppercase tracking-widest font-sans"
-             style="width:72px;height:72px;background:linear-gradient(135deg,#5c3d2b,#8d6748);">
-          Photo
+        <div class="menu-thumb" style="background:linear-gradient(135deg,#0d0600,#3d1c08);">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(200,169,110,0.75)" stroke-width="1.3"><path stroke-linecap="round" d="M7 18h10M9 18V9a3 3 0 0 1 6 0v9"/><path stroke-linecap="round" d="M9 13h6"/><path stroke-linecap="round" d="M15 10c2 0 3 1 3 2.5h-2"/></svg>
         </div>
         <div class="flex-1 min-w-0">
-          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Signature Flat White</h4>
-          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Double ristretto, silky microfoam, tulip art</p>
+          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Dark Chocolate Mocha</h4>
+          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Rich dark chocolate, double espresso, steamed milk</p>
           <div class="flex items-center justify-between mt-2">
-            <span class="font-sans text-sm font-600 text-gold">৳ 280</span>
-            <button onclick="addToWhatsApp('Signature Flat White', 280)" class="flex items-center gap-1.5 bg-[#25D366] text-white rounded-full px-3 py-1 text-[10px] font-semibold font-sans">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            <span class="font-sans text-sm font-600 text-gold">৳ 300 – 405</span>
+            <button class="wa-btn" onclick="addToWhatsApp('Dark Chocolate Mocha (Medium)', 345)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
               Add
             </button>
           </div>
@@ -369,17 +323,16 @@
       </div>
 
       <div class="menu-card flex gap-3 p-3.5 items-center">
-        <div class="rounded-xl flex-shrink-0 flex items-center justify-center text-[8px] text-warm-gray/50 uppercase tracking-widest font-sans"
-             style="width:72px;height:72px;background:linear-gradient(135deg,#d4a373,#e9c46a);">
-          Photo
+        <div class="menu-thumb" style="background:linear-gradient(135deg,#4a2a10,#c8844a);">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.3"><path stroke-linecap="round" d="M7 18h10M9 18V9a3 3 0 0 1 6 0v9"/><circle cx="12" cy="12" r="2" fill="rgba(200,169,110,0.5)" stroke="none"/></svg>
         </div>
         <div class="flex-1 min-w-0">
-          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Salted Caramel Latte</h4>
-          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">House caramel, Himalayan salt, oat milk option</p>
+          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">The White Canary</h4>
+          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Signature Nutella latte — Dhaka's most iconic order</p>
           <div class="flex items-center justify-between mt-2">
-            <span class="font-sans text-sm font-600 text-gold">৳ 320</span>
-            <button onclick="addToWhatsApp('Salted Caramel Latte', 320)" class="flex items-center gap-1.5 bg-[#25D366] text-white rounded-full px-3 py-1 text-[10px] font-semibold font-sans">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            <span class="font-sans text-sm font-600 text-gold">৳ 440</span>
+            <button class="wa-btn" onclick="addToWhatsApp('The White Canary Signature Nutella Latte', 440)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
               Add
             </button>
           </div>
@@ -387,39 +340,37 @@
       </div>
 
       <div class="menu-card flex gap-3 p-3.5 items-center">
-        <div class="rounded-xl flex-shrink-0 flex items-center justify-center text-[8px] text-warm-gray/50 uppercase tracking-widest font-sans"
-             style="width:72px;height:72px;background:linear-gradient(135deg,#2d6a4f,#52b788);">
-          Photo
+        <div class="menu-thumb" style="background:linear-gradient(135deg,#c07830,#f0d080);">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.3"><path stroke-linecap="round" d="M7 18h10M9 18V9a3 3 0 0 1 6 0v9"/><path stroke-linecap="round" d="M9 12c1-1 5-1 6 0"/></svg>
         </div>
         <div class="flex-1 min-w-0">
-          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Matcha Ceremonial Latte</h4>
-          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Grade-A matcha, steamed whole milk, honey</p>
+          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Caramel Macchiato</h4>
+          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Vanilla-infused milk, espresso shot, golden caramel drizzle</p>
           <div class="flex items-center justify-between mt-2">
-            <span class="font-sans text-sm font-600 text-gold">৳ 350</span>
-            <button onclick="addToWhatsApp('Matcha Ceremonial Latte', 350)" class="flex items-center gap-1.5 bg-[#25D366] text-white rounded-full px-3 py-1 text-[10px] font-semibold font-sans">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            <span class="font-sans text-sm font-600 text-gold">৳ 310 – 365</span>
+            <button class="wa-btn" onclick="addToWhatsApp('Caramel Macchiato (Medium)', 310)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
               Add
             </button>
           </div>
         </div>
       </div>
-    </div><!-- /tab-coffee -->
+    </div>
 
-    <!-- ── Tab: Desserts ── -->
+    <!-- Desserts Tab -->
     <div id="tab-desserts" class="tab-panel space-y-3 hidden">
 
       <div class="menu-card flex gap-3 p-3.5 items-center">
-        <div class="rounded-xl flex-shrink-0 flex items-center justify-center text-[8px] text-warm-gray/50 uppercase tracking-widest font-sans"
-             style="width:72px;height:72px;background:linear-gradient(135deg,#f4d0b5,#e8a87c);">
-          Photo
+        <div class="menu-thumb" style="background:linear-gradient(135deg,#2e0f00,#7a2e08);">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(200,169,110,0.7)" stroke-width="1.3"><circle cx="12" cy="12" r="8"/><path stroke-linecap="round" d="M9 12a3 3 0 0 1 6 0"/><circle cx="12" cy="9" r="1.5" fill="rgba(200,169,110,0.6)" stroke="none"/></svg>
         </div>
         <div class="flex-1 min-w-0">
-          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Burnt Basque Cheesecake</h4>
-          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Caramelised top, cream cheese, berry coulis</p>
+          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Nutella Pizza</h4>
+          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Award-winning dessert; the ultimate share plate</p>
           <div class="flex items-center justify-between mt-2">
-            <span class="font-sans text-sm font-600 text-gold">৳ 380</span>
-            <button onclick="addToWhatsApp('Burnt Basque Cheesecake', 380)" class="flex items-center gap-1.5 bg-[#25D366] text-white rounded-full px-3 py-1 text-[10px] font-semibold font-sans">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            <span class="font-sans text-sm font-600 text-gold">৳ 1,100</span>
+            <button class="wa-btn" onclick="addToWhatsApp('Nutella Pizza', 1100)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
               Add
             </button>
           </div>
@@ -427,17 +378,16 @@
       </div>
 
       <div class="menu-card flex gap-3 p-3.5 items-center">
-        <div class="rounded-xl flex-shrink-0 flex items-center justify-center text-[8px] text-warm-gray/50 uppercase tracking-widest font-sans"
-             style="width:72px;height:72px;background:linear-gradient(135deg,#3d1f1f,#7b3f3f);">
-          Photo
+        <div class="menu-thumb" style="background:linear-gradient(135deg,#0f0600,#4a1f08);">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(200,169,110,0.7)" stroke-width="1.3"><rect x="4" y="7" width="16" height="11" rx="3"/><path stroke-linecap="round" d="M4 12h16M12 7v11"/></svg>
         </div>
         <div class="flex-1 min-w-0">
-          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Dark Chocolate Fondant</h4>
-          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Valrhona 70%, molten centre, vanilla gelato</p>
+          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Martha Kent's Fudge Brownie</h4>
+          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Dense, fudgy dark chocolate — freshly baked in-house</p>
           <div class="flex items-center justify-between mt-2">
-            <span class="font-sans text-sm font-600 text-gold">৳ 440</span>
-            <button onclick="addToWhatsApp('Dark Chocolate Fondant', 440)" class="flex items-center gap-1.5 bg-[#25D366] text-white rounded-full px-3 py-1 text-[10px] font-semibold font-sans">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            <span class="font-sans text-sm font-600 text-gold">৳ 165</span>
+            <button class="wa-btn" onclick="addToWhatsApp('Martha Kent\'s Fudge Brownie', 165)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
               Add
             </button>
           </div>
@@ -445,166 +395,230 @@
       </div>
 
       <div class="menu-card flex gap-3 p-3.5 items-center">
-        <div class="rounded-xl flex-shrink-0 flex items-center justify-center text-[8px] text-warm-gray/50 uppercase tracking-widest font-sans"
-             style="width:72px;height:72px;background:linear-gradient(135deg,#f0e6fa,#d4a8e8);">
-          Photo
+        <div class="menu-thumb" style="background:linear-gradient(135deg,#7a1030,#e06080);">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.3"><path stroke-linecap="round" d="M5 20h14l-2-9H7z"/><path stroke-linecap="round" d="M9 11V8a3 3 0 0 1 6 0v3"/></svg>
         </div>
         <div class="flex-1 min-w-0">
-          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Lavender Crème Brûlée</h4>
-          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">French lavender, caramelised sugar crust</p>
+          <h4 class="font-serif text-base font-semibold text-charcoal leading-tight">Strawberry Cheesecake</h4>
+          <p class="font-sans text-[11px] text-warm-gray mt-0.5 leading-relaxed">Real Swiss strawberries, creamy filling, whole or slice</p>
           <div class="flex items-center justify-between mt-2">
-            <span class="font-sans text-sm font-600 text-gold">৳ 360</span>
-            <button onclick="addToWhatsApp('Lavender Crème Brûlée', 360)" class="flex items-center gap-1.5 bg-[#25D366] text-white rounded-full px-3 py-1 text-[10px] font-semibold font-sans">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            <span class="font-sans text-sm font-600 text-gold">৳ 4,500 (whole)</span>
+            <button class="wa-btn" onclick="addToWhatsApp('Strawberry Cheesecake', 4500)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
               Add
             </button>
           </div>
         </div>
       </div>
-
-    </div><!-- /tab-desserts -->
+    </div>
   </section>
 
   <div class="gold-divider mx-8 my-7 reveal"></div>
 
-  <!-- ══════════════════════════════
-       DUAL LOCATION TOGGLE
-  ═══════════════════════════════ -->
+  <!-- ══════════════════════════════  LOCATIONS  ══════════════════════════════ -->
   <section id="locations" class="px-4 pb-8 reveal">
     <p class="font-sans text-[9px] tracking-[0.25em] uppercase text-gold mb-1">Visit Us</p>
     <h3 class="font-serif text-xl font-semibold text-charcoal mb-4">Our Locations</h3>
 
-    <!-- Toggle pill -->
     <div class="flex gap-1 p-1 rounded-full mb-5" style="background:#E8E4DE;">
-      <button id="btn-gulshan"  class="loc-btn active" onclick="switchLocation('gulshan')">Gulshan-2</button>
-      <button id="btn-shanta"   class="loc-btn inactive" onclick="switchLocation('shanta')">Shanta Western</button>
+      <button id="btn-gulshan" class="loc-btn active"   onclick="switchLocation('gulshan')">Gulshan-2</button>
+      <button id="btn-shanta"  class="loc-btn inactive" onclick="switchLocation('shanta')">Shanta Western</button>
     </div>
 
-    <!-- Gulshan panel -->
+    <!-- Gulshan 2 -->
     <div id="panel-gulshan" class="menu-card p-5 space-y-4">
+      <div class="overflow-hidden rounded-2xl" style="height:175px;">
+        <iframe class="map-frame" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=The+White+Canary+Cafe+Road+86+Gulshan+2+Dhaka&output=embed&z=16"></iframe>
+      </div>
       <div class="flex items-start gap-3">
         <div class="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center" style="background:linear-gradient(135deg,#C8A96E,#E2C98A);">
-          <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7-6.686-7-11A7 7 0 0 1 19 10c0 4.314-7 11-7 11z"/>
-            <circle cx="12" cy="10" r="2.5"/>
-          </svg>
+          <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7-6.686-7-11A7 7 0 0 1 19 10c0 4.314-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
         </div>
         <div>
           <p class="font-sans text-[10px] tracking-widest uppercase text-gold mb-0.5">Address</p>
-          <p class="font-sans text-sm text-charcoal leading-relaxed">House 21, Road 8, Block H<br/>Gulshan-2, Dhaka 1212</p>
+          <p class="font-sans text-sm text-charcoal leading-relaxed">Road 86, Gulshan-2, Dhaka 1212<br/><span class="text-warm-gray text-[11px]">Beside Justice Shahabuddin Ahmed Park</span></p>
         </div>
       </div>
       <div class="gold-divider"></div>
       <div class="flex items-start gap-3">
         <div class="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center" style="background:linear-gradient(135deg,#C8A96E,#E2C98A);">
-          <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 6v6l4 2"/>
-          </svg>
+          <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
         </div>
         <div>
           <p class="font-sans text-[10px] tracking-widest uppercase text-gold mb-0.5">Hours</p>
-          <p class="font-sans text-sm text-charcoal">Mon – Fri &nbsp;8:00 AM – 10:00 PM</p>
-          <p class="font-sans text-sm text-charcoal">Sat – Sun &nbsp;8:00 AM – 11:00 PM</p>
+          <p class="font-sans text-sm text-charcoal">Daily · 8:00 AM – 10:00 PM</p>
         </div>
       </div>
       <div class="gold-divider"></div>
-      <a href="https://maps.google.com/?q=Gulshan+2+Dhaka" target="_blank"
-         class="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-sans text-xs font-semibold tracking-widest uppercase transition-transform active:scale-98"
-         style="background:#2C2C2C;color:#FAF8F4;">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 0 1 3 16.382V5.618a1 1 0 0 1 1.447-.894L9 7m0 13V7m0 0l6-3m-6 3 6 3m0-6 5.447 2.724A1 1 0 0 1 21 7.618v10.764a1 1 0 0 1-1.447.894L15 17m0-13v13"/>
-        </svg>
-        Get Directions
-      </a>
-    </div>
-
-    <!-- Shanta panel (hidden by default) -->
-    <div id="panel-shanta" class="menu-card p-5 space-y-4 hidden">
-      <div class="flex items-start gap-3">
+      <div class="flex items-center gap-3">
         <div class="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center" style="background:linear-gradient(135deg,#C8A96E,#E2C98A);">
-          <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7-6.686-7-11A7 7 0 0 1 19 10c0 4.314-7 11-7 11z"/>
-            <circle cx="12" cy="10" r="2.5"/>
-          </svg>
+          <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 0 1 2-2h2l1 4-2 2a12 12 0 0 0 5 5l2-2 4 1v2a2 2 0 0 1-2 2C9 20 4 15 4 9a2 2 0 0 1-1-4z"/></svg>
         </div>
         <div>
-          <p class="font-sans text-[10px] tracking-widest uppercase text-gold mb-0.5">Address</p>
-          <p class="font-sans text-sm text-charcoal leading-relaxed">Level 4, Shanta Western Tower<br/>186 Bir Uttam Mir Shawkat Ali Rd<br/>Tejgaon, Dhaka 1208</p>
+          <p class="font-sans text-[10px] tracking-widest uppercase text-gold mb-0.5">Phone</p>
+          <a href="tel:+8801709642004" class="font-sans text-sm text-charcoal">+880 1709-642004</a>
         </div>
       </div>
       <div class="gold-divider"></div>
-      <div class="flex items-start gap-3">
-        <div class="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center" style="background:linear-gradient(135deg,#C8A96E,#E2C98A);">
-          <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 6v6l4 2"/>
-          </svg>
-        </div>
-        <div>
-          <p class="font-sans text-[10px] tracking-widest uppercase text-gold mb-0.5">Hours</p>
-          <p class="font-sans text-sm text-charcoal">Mon – Fri &nbsp;9:00 AM – 9:00 PM</p>
-          <p class="font-sans text-sm text-charcoal">Sat – Sun &nbsp;9:00 AM – 10:00 PM</p>
-        </div>
-      </div>
-      <div class="gold-divider"></div>
-      <a href="https://maps.google.com/?q=Shanta+Western+Tower+Tejgaon+Dhaka" target="_blank"
+      <!-- Real Google Maps share link from user -->
+      <a href="https://share.google/KnsaqnEkINci9N78d" target="_blank"
          class="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-sans text-xs font-semibold tracking-widest uppercase"
          style="background:#2C2C2C;color:#FAF8F4;">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 0 1 3 16.382V5.618a1 1 0 0 1 1.447-.894L9 7m0 13V7m0 0l6-3m-6 3 6 3m0-6 5.447 2.724A1 1 0 0 1 21 7.618v10.764a1 1 0 0 1-1.447.894L15 17m0-13v13"/>
-        </svg>
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 0 1 3 16.382V5.618a1 1 0 0 1 1.447-.894L9 7m0 13V7m0 0l6-3m-6 3 6 3m0-6 5.447 2.724A1 1 0 0 1 21 7.618v10.764a1 1 0 0 1-1.447.894L15 17m0-13v13"/></svg>
         Get Directions
       </a>
     </div>
 
-  </section>
-
-  <!-- ══════════════════════════════
-       INSTAGRAM STRIP (decorative)
-  ═══════════════════════════════ -->
-  <section class="px-4 pb-8 reveal">
-    <p class="font-sans text-[9px] tracking-[0.25em] uppercase text-gold mb-1">Follow the Vibe</p>
-    <h3 class="font-serif text-xl font-semibold text-charcoal mb-4">@thewhitecanary</h3>
-    <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
-      <!-- Replace these divs with <img src="..." /> tags for real IG photos -->
-      <div class="flex-shrink-0 rounded-2xl overflow-hidden flex items-center justify-center text-[8px] text-warm-gray/50 uppercase tracking-widest font-sans"
-           style="width:100px;height:100px;background:linear-gradient(135deg,#f4e4c1,#e8c98a);">Photo</div>
-      <div class="flex-shrink-0 rounded-2xl overflow-hidden flex items-center justify-center text-[8px] text-warm-gray/50 uppercase tracking-widest font-sans"
-           style="width:100px;height:100px;background:linear-gradient(135deg,#3d2b1f,#6b4c35);">Photo</div>
-      <div class="flex-shrink-0 rounded-2xl overflow-hidden flex items-center justify-center text-[8px] text-warm-gray/50 uppercase tracking-widest font-sans"
-           style="width:100px;height:100px;background:linear-gradient(135deg,#e8dfd2,#c8b89a);">Photo</div>
-      <div class="flex-shrink-0 rounded-2xl overflow-hidden flex items-center justify-center text-[8px] text-warm-gray/50 uppercase tracking-widest font-sans"
-           style="width:100px;height:100px;background:linear-gradient(135deg,#2d4a3e,#4a7c68);">Photo</div>
+    <!-- Shanta Western Tower -->
+    <div id="panel-shanta" class="menu-card p-5 space-y-4 hidden">
+      <div class="overflow-hidden rounded-2xl" style="height:175px;">
+        <iframe class="map-frame" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=Shanta+Western+Tower+186+Tejgaon+Dhaka&output=embed&z=16"></iframe>
+      </div>
+      <div class="flex items-start gap-3">
+        <div class="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center" style="background:linear-gradient(135deg,#C8A96E,#E2C98A);">
+          <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7-6.686-7-11A7 7 0 0 1 19 10c0 4.314-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        </div>
+        <div>
+          <p class="font-sans text-[10px] tracking-widest uppercase text-gold mb-0.5">Address</p>
+          <p class="font-sans text-sm text-charcoal leading-relaxed">Level 3, Shanta Western Tower<br/>186 Bir Uttam Mir Shawkat Ali Rd<br/>Tejgaon, Dhaka 1208</p>
+        </div>
+      </div>
+      <div class="gold-divider"></div>
+      <div class="flex items-start gap-3">
+        <div class="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center" style="background:linear-gradient(135deg,#C8A96E,#E2C98A);">
+          <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
+        </div>
+        <div>
+          <p class="font-sans text-[10px] tracking-widest uppercase text-gold mb-0.5">Hours</p>
+          <p class="font-sans text-sm text-charcoal">Mon – Fri · 9:00 AM – 9:00 PM</p>
+          <p class="font-sans text-sm text-charcoal">Sat – Sun · 9:00 AM – 10:00 PM</p>
+        </div>
+      </div>
+      <div class="gold-divider"></div>
+      <a href="https://maps.google.com/?q=Shanta+Western+Tower+186+Bir+Uttam+Mir+Shawkat+Ali+Tejgaon+Dhaka" target="_blank"
+         class="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-sans text-xs font-semibold tracking-widest uppercase"
+         style="background:#2C2C2C;color:#FAF8F4;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 0 1 3 16.382V5.618a1 1 0 0 1 1.447-.894L9 7m0 13V7m0 0l6-3m-6 3 6 3m0-6 5.447 2.724A1 1 0 0 1 21 7.618v10.764a1 1 0 0 1-1.447.894L15 17m0-13v13"/></svg>
+        Get Directions
+      </a>
     </div>
   </section>
 
-  <!-- ══════════════════════════════
-       FOOTER
-  ═══════════════════════════════ -->
+  <!-- ══════════════════════════════  SOCIAL MEDIA  ══════════════════════════════ -->
+  <section class="px-4 pb-8 reveal">
+    <p class="font-sans text-[9px] tracking-[0.25em] uppercase text-gold mb-1">Follow the Vibe</p>
+    <h3 class="font-serif text-xl font-semibold text-charcoal mb-1">Find Us Online</h3>
+    <p class="font-sans text-[10px] text-warm-gray mb-5">Stay connected across all our platforms</p>
+
+    <div class="space-y-3">
+
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/whitecanarycafe/" target="_blank"
+         class="flex items-center gap-4 p-4 rounded-2xl border border-light-gray bg-white transition-transform active:scale-98 hover:shadow-md"
+         style="text-decoration:none;">
+        <div class="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center"
+             style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="font-sans text-xs font-semibold text-charcoal">@whitecanarycafe</p>
+          <p class="font-sans text-[10px] text-warm-gray mt-0.5">Instagram · 12K followers · 1,414 posts</p>
+        </div>
+        <svg width="16" height="16" fill="none" stroke="#C8A96E" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+      </a>
+
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/whitecanarycafe/" target="_blank"
+         class="flex items-center gap-4 p-4 rounded-2xl border border-light-gray bg-white transition-transform active:scale-98 hover:shadow-md"
+         style="text-decoration:none;">
+        <div class="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center"
+             style="background:#1877F2;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="font-sans text-xs font-semibold text-charcoal">The White Canary Cafe</p>
+          <p class="font-sans text-[10px] text-warm-gray mt-0.5">Facebook · 82,800+ likes · 17,000+ check-ins</p>
+        </div>
+        <svg width="16" height="16" fill="none" stroke="#C8A96E" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+      </a>
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/8801709642004" target="_blank"
+         class="flex items-center gap-4 p-4 rounded-2xl border border-light-gray bg-white transition-transform active:scale-98 hover:shadow-md"
+         style="text-decoration:none;">
+        <div class="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center"
+             style="background:#25D366;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="font-sans text-xs font-semibold text-charcoal">+880 1709-642004</p>
+          <p class="font-sans text-[10px] text-warm-gray mt-0.5">WhatsApp · Order, enquire, reserve</p>
+        </div>
+        <svg width="16" height="16" fill="none" stroke="#C8A96E" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+      </a>
+
+      <!-- TripAdvisor -->
+      <a href="https://www.tripadvisor.com/Restaurant_Review-g293936-d14094594-Reviews-The_White_Canary_Cafe-Dhaka_City_Dhaka_Division.html" target="_blank"
+         class="flex items-center gap-4 p-4 rounded-2xl border border-light-gray bg-white transition-transform active:scale-98 hover:shadow-md"
+         style="text-decoration:none;">
+        <div class="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center"
+             style="background:#34E0A1;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+            <path d="M12.006 4.295c-2.67 0-5.338.784-7.645 2.353H1.5l1.757 1.868a5.5 5.5 0 0 0 7.518 7.994l1.231 1.308 1.231-1.308a5.5 5.5 0 0 0 7.518-7.994L22.5 6.648h-2.861c-2.307-1.57-4.964-2.353-7.633-2.353zm0 1.5c2.169 0 4.298.603 6.124 1.731l.468.288H19.5a4 4 0 1 1-1.285 7.786l-.715-.238-5.494 5.842-5.494-5.842-.715.238A4 4 0 1 1 4.5 7.814H3.402l.468-.288A11.474 11.474 0 0 1 12.006 5.795zm-4.5 3.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm9 0a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm-9 1.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm9 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="font-sans text-xs font-semibold text-charcoal">The White Canary Cafe</p>
+          <p class="font-sans text-[10px] text-warm-gray mt-0.5">
+            TripAdvisor ·
+            <span style="color:#34E0A1;">★★★★★</span>
+            4.8 · #71 of 699 in Dhaka
+          </p>
+        </div>
+        <svg width="16" height="16" fill="none" stroke="#C8A96E" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════  FOOTER  ══════════════════════════════ -->
   <footer class="px-4 pb-6 text-center reveal">
     <div class="gold-divider mb-6"></div>
     <div class="flex items-center justify-center gap-2 mb-3">
-      <svg width="16" height="16" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" class="opacity-60">
+      <svg width="16" height="16" viewBox="0 0 56 56" fill="none" class="opacity-60">
         <ellipse cx="28" cy="30" rx="14" ry="12" fill="#C8A96E"/>
-        <ellipse cx="28" cy="16" rx="9" ry="9" fill="#C8A96E"/>
+        <ellipse cx="28" cy="16" rx="9"  ry="9"  fill="#C8A96E"/>
         <circle cx="24" cy="13" r="2" fill="#3d2b1f"/>
         <path d="M19 16 L15 14 L18 17" fill="#C8A96E"/>
       </svg>
       <p class="font-serif italic text-warm-gray text-sm">The White Canary Cafe</p>
     </div>
-    <p class="font-sans text-[10px] text-warm-gray/60 tracking-wider mb-1">Breakfast &amp; Beyond · Dhaka, Bangladesh</p>
+    <p class="font-sans text-[10px] text-warm-gray/60 tracking-wider mb-1">Breakfast &amp; Beyond · Gulshan-2, Dhaka</p>
+    <div class="flex items-center justify-center gap-4 mt-3 mb-1">
+      <a href="tel:+8801709642004" class="font-sans text-[10px] text-gold/70 tracking-wider">+880 1709-642004</a>
+      <span class="text-light-gray">·</span>
+      <a href="https://www.facebook.com/whitecanarycafe/" target="_blank" class="font-sans text-[10px] text-gold/70 tracking-wider">Facebook</a>
+    </div>
     <p class="font-sans text-[9px] tracking-[0.15em] text-warm-gray/40 uppercase mt-4">
       Designed by <span class="text-gold/70">init.io</span>
     </p>
   </footer>
 
-  <!-- ══════════════════════════════
-       STICKY FOOTER — ORDER BUTTON
-  ═══════════════════════════════ -->
+  <!-- ══════════════════════════════  STICKY ORDER BTN  ══════════════════════════════ -->
   <div class="sticky-order">
-    <a href="https://wa.me/8801XXXXXXXXX?text=Hi!%20I'd%20like%20to%20place%20an%20order%20from%20The%20White%20Canary%20Cafe."
+    <a href="https://wa.me/8801709642004?text=Hi!%20I'd%20like%20to%20place%20an%20order%20from%20The%20White%20Canary%20Cafe."
        target="_blank"
-       class="flex items-center justify-center gap-3 w-full py-4 rounded-2xl font-sans text-sm font-semibold tracking-widest uppercase text-white transition-transform active:scale-95 shadow-xl"
-       style="background:linear-gradient(135deg,#2C2C2C 0%, #1a1a1a 100%);box-shadow:0 4px 24px rgba(44,44,44,0.35);">
+       class="flex items-center justify-center gap-3 w-full py-4 rounded-2xl font-sans text-sm font-semibold tracking-widest uppercase text-white active:scale-95 transition-transform"
+       style="background:linear-gradient(135deg,#2C2C2C,#1a1a1a);box-shadow:0 4px 24px rgba(44,44,44,0.35);">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
         <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.531 5.845L0 24l6.333-1.51A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.655-.494-5.188-1.36l-.371-.22-3.761.897.933-3.663-.241-.379A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
@@ -613,19 +627,13 @@
     </a>
   </div>
 
-  <!-- ══════════════════════════════
-       JAVASCRIPT
-  ═══════════════════════════════ -->
   <script>
-    /* ── Tab switching ── */
     function switchTab(tab, el) {
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.getElementById('tab-' + tab).classList.remove('hidden');
       el.classList.add('active');
     }
-
-    /* ── Location toggle ── */
     function switchLocation(loc) {
       const panels = { gulshan: 'panel-gulshan', shanta: 'panel-shanta' };
       const btns   = { gulshan: 'btn-gulshan',  shanta: 'btn-shanta' };
@@ -634,16 +642,12 @@
         document.getElementById(btns[k]).className = 'loc-btn ' + (k === loc ? 'active' : 'inactive');
       });
     }
-
-    /* ── Add to WhatsApp ── */
     function addToWhatsApp(item, price) {
-      const msg = encodeURIComponent(`Hi! I'd like to order:\n\n• ${item} — ৳${price}\n\nFrom The White Canary Cafe. Please confirm availability and total.`);
-      window.open(`https://wa.me/8801XXXXXXXXX?text=${msg}`, '_blank');
+      const msg = encodeURIComponent(`Hi! I'd like to order:\n\n• ${item} — ৳${price}\n\nFrom The White Canary Cafe, Gulshan-2. Please confirm availability and total.`);
+      window.open(`https://wa.me/8801709642004?text=${msg}`, '_blank');
     }
-
-    /* ── Scroll reveal ── */
     const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
