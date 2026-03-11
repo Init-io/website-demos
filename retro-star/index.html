@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RETRO STAR — Express Catalog</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow+Condensed:wght@400;600;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'rs-black':   '#060608',
+            'rs-charcoal':'#111116',
+            'rs-card':    '#16161d',
+            'rs-border':  '#222230',
+            'rs-blue':    '#1F6FEB',
+            'rs-blue-lt': '#4A9EFF',
+            'rs-neon':    '#39FF87',
+            'rs-amber':   '#FFB400',
+          },
+          fontFamily: {
+            archivo: ['"Archivo Black"', 'sans-serif'],
+            barlow:  ['"Barlow Condensed"', 'sans-serif'],
+            dm:      ['"DM Sans"', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #060608;
+      color: #e8e8f0;
+      font-family: 'DM Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 80px;
+    }
+
+    /* ── NOISE GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      opacity: 0.4;
+    }
+
+    /* ── HERO SCANLINES ── */
+    .scanlines::after {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px
+      );
+    }
+
+    /* ── ELECTRIC GLOW ── */
+    .glow-blue  { text-shadow: 0 0 20px rgba(31,111,235,0.7), 0 0 60px rgba(31,111,235,0.3); }
+    .glow-neon  { text-shadow: 0 0 16px rgba(57,255,135,0.8), 0 0 40px rgba(57,255,135,0.4); }
+    .glow-box-blue { box-shadow: 0 0 0 1px rgba(31,111,235,0.4), 0 0 30px rgba(31,111,235,0.15); }
+    .glow-box-neon  { box-shadow: 0 0 0 1px rgba(57,255,135,0.35), 0 0 20px rgba(57,255,135,0.1); }
+
+    /* ── HERO BG ── */
+    .hero-bg {
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(31,111,235,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 90% 80%, rgba(57,255,135,0.07) 0%, transparent 60%),
+        #060608;
+    }
+
+    /* ── PRODUCT CARD ── */
+    .product-card {
+      background: #16161d;
+      border: 1px solid #222230;
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      position: relative;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(31,111,235,0.18), 0 0 0 1px rgba(31,111,235,0.25);
+    }
+    .product-card:hover .card-img-wrap img { transform: scale(1.06); }
+
+    /* ── CARD IMAGE ── */
+    .card-img-wrap { overflow: hidden; aspect-ratio: 3/3.6; position: relative; }
+    .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+
+    /* ── BADGE ── */
+    .badge-blue {
+      background: rgba(31,111,235,0.15);
+      border: 1px solid rgba(31,111,235,0.4);
+      color: #4A9EFF;
+      border-radius: 999px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      display: inline-block;
+    }
+    .badge-neon {
+      background: rgba(57,255,135,0.1);
+      border: 1px solid rgba(57,255,135,0.35);
+      color: #39FF87;
+      border-radius: 999px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      display: inline-block;
+    }
+    .badge-sold {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(255,60,60,0.88);
+      color: #fff;
+      border-radius: 6px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      z-index: 2;
+    }
+    .badge-new {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(31,111,235,0.9);
+      color: #fff;
+      border-radius: 6px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      z-index: 2;
+    }
+    .badge-hot {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(255,180,0,0.9);
+      color: #000;
+      border-radius: 6px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      z-index: 2;
+    }
+
+    /* ── QUICK BUY BTN ── */
+    .btn-quickbuy {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      background: #1F6FEB;
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 0;
+      width: 100%;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.18s, box-shadow 0.18s;
+    }
+    .btn-quickbuy:hover {
+      background: #4A9EFF;
+      box-shadow: 0 4px 20px rgba(31,111,235,0.4);
+    }
+
+    /* ── TRUST BAR ── */
+    .trust-bar {
+      background: linear-gradient(135deg, #111116 0%, #16161d 100%);
+      border-top: 1px solid #222230;
+      border-bottom: 1px solid #222230;
+    }
+
+    /* ── DELIVERY CARD ── */
+    .delivery-card {
+      background: #16161d;
+      border: 1px solid #222230;
+      border-radius: 14px;
+      padding: 18px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .delivery-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.25rem;
+    }
+
+    /* ── MODAL ── */
+    #sizeModal {
+      display: none; position: fixed; inset: 0; z-index: 100;
+      background: rgba(6,6,8,0.85);
+      backdrop-filter: blur(6px);
+      align-items: flex-end;
+      justify-content: center;
+    }
+    #sizeModal.open { display: flex; }
+    .modal-sheet {
+      background: #16161d;
+      border: 1px solid #222230;
+      border-radius: 20px 20px 0 0;
+      width: 100%; max-width: 480px;
+      padding: 24px 20px 32px;
+      animation: slideUp 0.32s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to   { transform: translateY(0);   opacity: 1; }
+    }
+    .size-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .size-table th { background: rgba(31,111,235,0.12); color: #4A9EFF; font-family: 'Barlow Condensed'; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 10px; text-align: left; }
+    .size-table td { padding: 8px 10px; border-bottom: 1px solid #222230; color: #b0b0c0; }
+    .size-table tr:last-child td { border-bottom: none; }
+    .size-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+    /* ── STICKY FOOTER ── */
+    .sticky-wa {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+      background: linear-gradient(to top, #060608 60%, transparent);
+      padding: 12px 16px 16px;
+    }
+    .wa-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: #25D366;
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 14px;
+      padding: 15px;
+      text-decoration: none;
+      box-shadow: 0 4px 24px rgba(37,211,102,0.35);
+      transition: box-shadow 0.2s;
+    }
+    .wa-btn:hover { box-shadow: 0 6px 32px rgba(37,211,102,0.55); }
+
+    /* ── INSTA CARD ── */
+    .insta-card {
+      background: linear-gradient(135deg, #16161d, #1a1a25);
+      border: 1px solid #222230;
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .insta-card:hover {
+      border-color: rgba(131,58,180,0.4);
+      box-shadow: 0 4px 24px rgba(131,58,180,0.12);
+    }
+    .insta-avatar {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.1);
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4A9EFF;
+    }
+
+    /* ── MARQUEE ── */
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .marquee-track { display: flex; width: max-content; animation: marquee 18s linear infinite; }
+    .marquee-wrap { overflow: hidden; }
+
+    /* ── HERO LOGO LINES ── */
+    .logo-line {
+      display: block;
+      font-family: 'Archivo Black', sans-serif;
+      font-size: clamp(3.2rem, 18vw, 5.5rem);
+      line-height: 0.88;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    /* ── STARS ── */
+    .star-rating { color: #FFB400; font-size: 0.7rem; letter-spacing: 1px; }
+
+    /* ── NAV ── */
+    .top-nav {
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(6,6,8,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(34,34,48,0.8);
+    }
+
+    /* ── FILTER PILLS ── */
+    .filter-pill {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 1px solid #222230;
+      color: #888;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.18s;
+      background: transparent;
+    }
+    .filter-pill.active, .filter-pill:hover {
+      background: rgba(31,111,235,0.14);
+      border-color: rgba(31,111,235,0.5);
+      color: #4A9EFF;
+    }
+
+    /* ── CONTACT CARD ── */
+    .contact-item {
+      display: flex; align-items: center; gap: 12px;
+      background: #16161d;
+      border: 1px solid #222230;
+      border-radius: 12px;
+      padding: 14px 16px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.18s;
+    }
+    .contact-item:hover { border-color: rgba(31,111,235,0.4); }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     TOP NAV
+═════════════════════════════════════════════ -->
+<nav class="top-nav">
+  <div class="flex items-center justify-between px-4 py-3 max-w-lg mx-auto">
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 rounded-full bg-rs-blue flex items-center justify-center text-white" style="font-family:'Archivo Black';font-size:0.65rem;">RS</div>
+      <span class="font-barlow font-700 text-white tracking-widest text-sm uppercase">Retro Star</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="tel:01716854585" class="text-xs font-dm text-gray-400 hidden sm:block">📞 Order Now</a>
+      <button onclick="openModal()" class="badge-blue cursor-pointer">Size Guide</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════
+     MARQUEE TICKER
+═════════════════════════════════════════════ -->
+<div class="marquee-wrap bg-rs-blue py-2">
+  <div class="marquee-track">
+    <span class="font-barlow font-700 text-white text-xs tracking-widest uppercase px-6">⚡ New Drop: Stainless Chains</span>
+    <span class="font-barlow font-700 text-white text-xs tracking-widest uppercase px-6">★ Free Delivery Over 1500 BDT</span>
+    <span class="font-barlow font-700 text-white text-xs tracking-widest uppercase px-6">🔥 Trusted by 60k+ Followers</span>
+    <span class="font-barlow font-700 text-white text-xs tracking-widest uppercase px-6">📦 Cash on Delivery Available</span>
+    <span class="font-barlow font-700 text-white text-xs tracking-widest uppercase px-6">⚡ New Drop: Stainless Chains</span>
+    <span class="font-barlow font-700 text-white text-xs tracking-widest uppercase px-6">★ Free Delivery Over 1500 BDT</span>
+    <span class="font-barlow font-700 text-white text-xs tracking-widest uppercase px-6">🔥 Trusted by 60k+ Followers</span>
+    <span class="font-barlow font-700 text-white text-xs tracking-widest uppercase px-6">📦 Cash on Delivery Available</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     HERO
+═════════════════════════════════════════════ -->
+<section class="hero-bg scanlines relative overflow-hidden px-4 pt-10 pb-12 max-w-lg mx-auto">
+  <!-- Decorative circle -->
+  <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full" style="background:radial-gradient(circle,rgba(31,111,235,0.12) 0%,transparent 70%);pointer-events:none;"></div>
+
+  <div class="mb-5">
+    <span class="badge-neon glow-neon">Dhaka's #1 Streetwear Hub</span>
+  </div>
+
+  <h1 class="mb-1">
+    <span class="logo-line glow-blue">RETRO</span>
+    <span class="logo-line" style="color:#1F6FEB;">STAR</span>
+  </h1>
+  <p class="font-barlow font-600 text-gray-400 text-base tracking-wide uppercase mt-3 mb-6">
+    Dhaka's Premium Streetwear &amp; Accessories Hub
+  </p>
+
+  <!-- Trust pill row -->
+  <div class="flex flex-wrap gap-3 mb-8">
+    <div class="flex items-center gap-2 bg-rs-card border border-rs-border rounded-xl px-4 py-2">
+      <span class="text-rs-neon text-sm">✦</span>
+      <span class="font-dm text-white font-500 text-sm">Trusted by <span class="text-rs-neon font-700">60k+</span> Followers</span>
+    </div>
+    <div class="flex items-center gap-2 bg-rs-card border border-rs-border rounded-xl px-4 py-2">
+      <span class="text-rs-amber text-sm">★</span>
+      <span class="font-dm text-gray-300 text-sm">4.9 Rating</span>
+    </div>
+  </div>
+
+  <!-- CTA row -->
+  <div class="flex gap-3">
+    <a href="https://wa.me/8801716854585?text=Hi%2C%20I%20want%20to%20order!" target="_blank"
+      class="flex-1 btn-quickbuy text-sm py-3" style="border-radius:12px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.553 4.1 1.524 5.823L.057 23.486a.5.5 0 0 0 .614.614l5.701-1.461A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.6 9.6 0 0 1-5.015-1.408l-.361-.214-3.741.959.988-3.698-.234-.378A9.6 9.6 0 0 1 2.4 12c0-5.29 4.31-9.6 9.6-9.6s9.6 4.31 9.6 9.6-4.31 9.6-9.6 9.6z"/></svg>
+      Order via WhatsApp
+    </a>
+    <a href="tel:01716854585" class="flex items-center justify-center px-4 py-3 rounded-xl border border-rs-border text-gray-400 font-barlow font-600 text-sm tracking-wide uppercase hover:border-rs-blue hover:text-rs-blue-lt transition-colors">
+      📞 Call
+    </a>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     CATALOG SECTION
+═════════════════════════════════════════════ -->
+<section class="px-4 max-w-lg mx-auto mt-8">
+
+  <!-- Section header -->
+  <div class="flex items-center justify-between mb-4">
+    <div>
+      <span class="section-label block mb-1">Express Catalog</span>
+      <h2 class="font-archivo text-white text-2xl uppercase tracking-tight">Latest Drops</h2>
+    </div>
+    <a href="https://www.instagram.com/rs_accessories__" target="_blank" class="text-xs font-dm text-rs-blue-lt underline underline-offset-2">View All →</a>
+  </div>
+
+  <!-- Filter Pills -->
+  <div class="flex gap-2 overflow-x-auto pb-3 mb-5 -mx-1 px-1" style="scrollbar-width:none;">
+    <button class="filter-pill active">All</button>
+    <button class="filter-pill">Chains</button>
+    <button class="filter-pill">Tees</button>
+    <button class="filter-pill">Shades</button>
+    <button class="filter-pill">Rings</button>
+    <button class="filter-pill">Caps</button>
+  </div>
+
+  <!-- Product Grid -->
+  <div class="grid grid-cols-2 gap-3">
+
+    <!-- Card 1 -->
+    <div class="product-card">
+      <div class="card-img-wrap">
+        <span class="badge-new">New</span>
+        <img src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=400&q=80" alt="Cuban Link Chain" loading="lazy"/>
+      </div>
+      <div class="p-3">
+        <p class="font-dm text-gray-500 text-xs uppercase tracking-widest mb-1">Accessories</p>
+        <h3 class="font-barlow font-700 text-white text-base leading-tight mb-1">Cuban Link Chain</h3>
+        <div class="star-rating mb-2">★★★★★</div>
+        <div class="flex items-baseline gap-2 mb-3">
+          <span class="font-archivo text-rs-blue-lt text-base">৳ 850</span>
+          <span class="font-dm text-gray-600 text-xs line-through">৳ 1100</span>
+        </div>
+        <a href="https://wa.me/8801716854585?text=Hi!%20I%20want%20to%20order%20Cuban%20Link%20Chain" target="_blank" class="btn-quickbuy">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.553 4.1 1.524 5.823L.057 23.486a.5.5 0 0 0 .614.614l5.701-1.461A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.6 9.6 0 0 1-5.015-1.408l-.361-.214-3.741.959.988-3.698-.234-.378A9.6 9.6 0 0 1 2.4 12c0-5.29 4.31-9.6 9.6-9.6s9.6 4.31 9.6 9.6-4.31 9.6-9.6 9.6z"/></svg>
+          Quick Buy
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="product-card">
+      <div class="card-img-wrap">
+        <span class="badge-hot">🔥 Hot</span>
+        <img src="https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?w=400&q=80" alt="Oversized Tee" loading="lazy"/>
+      </div>
+      <div class="p-3">
+        <p class="font-dm text-gray-500 text-xs uppercase tracking-widest mb-1">Clothing</p>
+        <h3 class="font-barlow font-700 text-white text-base leading-tight mb-1">Oversized Drop Tee</h3>
+        <div class="star-rating mb-2">★★★★★</div>
+        <div class="flex items-baseline gap-2 mb-3">
+          <span class="font-archivo text-rs-blue-lt text-base">৳ 650</span>
+          <span class="font-dm text-gray-600 text-xs line-through">৳ 850</span>
+        </div>
+        <a href="https://wa.me/8801716854585?text=Hi!%20I%20want%20to%20order%20Oversized%20Drop%20Tee" target="_blank" class="btn-quickbuy">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.553 4.1 1.524 5.823L.057 23.486a.5.5 0 0 0 .614.614l5.701-1.461A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.6 9.6 0 0 1-5.015-1.408l-.361-.214-3.741.959.988-3.698-.234-.378A9.6 9.6 0 0 1 2.4 12c0-5.29 4.31-9.6 9.6-9.6s9.6 4.31 9.6 9.6-4.31 9.6-9.6 9.6z"/></svg>
+          Quick Buy
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="product-card">
+      <div class="card-img-wrap">
+        <span class="badge-new">New</span>
+        <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&q=80" alt="Retro Sunglasses" loading="lazy"/>
+      </div>
+      <div class="p-3">
+        <p class="font-dm text-gray-500 text-xs uppercase tracking-widest mb-1">Eyewear</p>
+        <h3 class="font-barlow font-700 text-white text-base leading-tight mb-1">Retro Shield Shades</h3>
+        <div class="star-rating mb-2">★★★★☆</div>
+        <div class="flex items-baseline gap-2 mb-3">
+          <span class="font-archivo text-rs-blue-lt text-base">৳ 490</span>
+          <span class="font-dm text-gray-600 text-xs line-through">৳ 700</span>
+        </div>
+        <a href="https://wa.me/8801716854585?text=Hi!%20I%20want%20to%20order%20Retro%20Shield%20Shades" target="_blank" class="btn-quickbuy">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.553 4.1 1.524 5.823L.057 23.486a.5.5 0 0 0 .614.614l5.701-1.461A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.6 9.6 0 0 1-5.015-1.408l-.361-.214-3.741.959.988-3.698-.234-.378A9.6 9.6 0 0 1 2.4 12c0-5.29 4.31-9.6 9.6-9.6s9.6 4.31 9.6 9.6-4.31 9.6-9.6 9.6z"/></svg>
+          Quick Buy
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="product-card">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&q=80" alt="Stainless Steel Ring" loading="lazy"/>
+      </div>
+      <div class="p-3">
+        <p class="font-dm text-gray-500 text-xs uppercase tracking-widest mb-1">Accessories</p>
+        <h3 class="font-barlow font-700 text-white text-base leading-tight mb-1">Steel Signet Ring</h3>
+        <div class="star-rating mb-2">★★★★★</div>
+        <div class="flex items-baseline gap-2 mb-3">
+          <span class="font-archivo text-rs-blue-lt text-base">৳ 320</span>
+          <span class="font-dm text-gray-600 text-xs line-through">৳ 450</span>
+        </div>
+        <a href="https://wa.me/8801716854585?text=Hi!%20I%20want%20to%20order%20Steel%20Signet%20Ring" target="_blank" class="btn-quickbuy">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.553 4.1 1.524 5.823L.057 23.486a.5.5 0 0 0 .614.614l5.701-1.461A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.6 9.6 0 0 1-5.015-1.408l-.361-.214-3.741.959.988-3.698-.234-.378A9.6 9.6 0 0 1 2.4 12c0-5.29 4.31-9.6 9.6-9.6s9.6 4.31 9.6 9.6-4.31 9.6-9.6 9.6z"/></svg>
+          Quick Buy
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="product-card">
+      <div class="card-img-wrap">
+        <span class="badge-hot">🔥 Hot</span>
+        <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400&q=80" alt="Snapback Cap" loading="lazy"/>
+      </div>
+      <div class="p-3">
+        <p class="font-dm text-gray-500 text-xs uppercase tracking-widest mb-1">Headwear</p>
+        <h3 class="font-barlow font-700 text-white text-base leading-tight mb-1">RS Snapback Cap</h3>
+        <div class="star-rating mb-2">★★★★★</div>
+        <div class="flex items-baseline gap-2 mb-3">
+          <span class="font-archivo text-rs-blue-lt text-base">৳ 580</span>
+          <span class="font-dm text-gray-600 text-xs line-through">৳ 750</span>
+        </div>
+        <a href="https://wa.me/8801716854585?text=Hi!%20I%20want%20to%20order%20RS%20Snapback%20Cap" target="_blank" class="btn-quickbuy">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.553 4.1 1.524 5.823L.057 23.486a.5.5 0 0 0 .614.614l5.701-1.461A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.6 9.6 0 0 1-5.015-1.408l-.361-.214-3.741.959.988-3.698-.234-.378A9.6 9.6 0 0 1 2.4 12c0-5.29 4.31-9.6 9.6-9.6s9.6 4.31 9.6 9.6-4.31 9.6-9.6 9.6z"/></svg>
+          Quick Buy
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="product-card">
+      <div class="card-img-wrap">
+        <span class="badge-new">New</span>
+        <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&q=80" alt="Pendant Necklace" loading="lazy"/>
+      </div>
+      <div class="p-3">
+        <p class="font-dm text-gray-500 text-xs uppercase tracking-widest mb-1">Accessories</p>
+        <h3 class="font-barlow font-700 text-white text-base leading-tight mb-1">Star Pendant Chain</h3>
+        <div class="star-rating mb-2">★★★★★</div>
+        <div class="flex items-baseline gap-2 mb-3">
+          <span class="font-archivo text-rs-blue-lt text-base">৳ 720</span>
+          <span class="font-dm text-gray-600 text-xs line-through">৳ 950</span>
+        </div>
+        <a href="https://wa.me/8801716854585?text=Hi!%20I%20want%20to%20order%20Star%20Pendant%20Chain" target="_blank" class="btn-quickbuy">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.553 4.1 1.524 5.823L.057 23.486a.5.5 0 0 0 .614.614l5.701-1.461A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.6 9.6 0 0 1-5.015-1.408l-.361-.214-3.741.959.988-3.698-.234-.378A9.6 9.6 0 0 1 2.4 12c0-5.29 4.31-9.6 9.6-9.6s9.6 4.31 9.6 9.6-4.31 9.6-9.6 9.6z"/></svg>
+          Quick Buy
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+
+  <!-- Load More -->
+  <a href="https://wa.me/8801716854585?text=Hi!%20Please%20show%20me%20your%20full%20catalog" target="_blank"
+    class="mt-5 flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-rs-border text-gray-400 font-barlow font-700 text-sm tracking-widest uppercase hover:border-rs-blue hover:text-rs-blue-lt transition-colors">
+    View Full Catalog →
+  </a>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SIZE GUIDE BANNER
+═════════════════════════════════════════════ -->
+<section class="px-4 max-w-lg mx-auto mt-10">
+  <div class="glow-box-blue rounded-2xl p-5 relative overflow-hidden" style="background:linear-gradient(135deg,rgba(31,111,235,0.12) 0%,rgba(16,16,29,0.9) 100%);border:1px solid rgba(31,111,235,0.25);">
+    <div class="absolute right-0 top-0 w-24 h-24 rounded-full" style="background:radial-gradient(circle,rgba(31,111,235,0.2) 0%,transparent 70%);pointer-events:none;transform:translate(30%,-30%)"></div>
+    <span class="section-label block mb-2">Clothing Sizing</span>
+    <h3 class="font-archivo text-white text-xl uppercase mb-2">Not Sure About Your Size?</h3>
+    <p class="font-dm text-gray-400 text-sm mb-4">Our oversized tees run true to hype sizing. Check our guide before ordering.</p>
+    <button onclick="openModal()" class="btn-quickbuy" style="max-width:200px;border-radius:10px;">
+      📏 View Size Guide
+    </button>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     DELIVERY INFO
+═════════════════════════════════════════════ -->
+<section class="px-4 max-w-lg mx-auto mt-10">
+  <span class="section-label block mb-1">Shipping</span>
+  <h2 class="font-archivo text-white text-2xl uppercase tracking-tight mb-5">Delivery Info</h2>
+  <div class="flex flex-col gap-3">
+
+    <div class="delivery-card">
+      <div class="delivery-icon" style="background:rgba(57,255,135,0.1);border:1px solid rgba(57,255,135,0.25);">🏙️</div>
+      <div>
+        <p class="font-barlow font-700 text-white text-base tracking-wide">Inside Dhaka</p>
+        <p class="font-dm text-gray-400 text-sm mt-0.5">Delivered within <span class="text-white font-500">1–2 days</span></p>
+        <div class="mt-2 inline-flex items-center gap-1 rounded-lg px-3 py-1" style="background:rgba(57,255,135,0.08);border:1px solid rgba(57,255,135,0.2);">
+          <span class="font-archivo text-rs-neon text-sm">৳ 60</span>
+          <span class="font-dm text-gray-500 text-xs">delivery charge</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="delivery-card">
+      <div class="delivery-icon" style="background:rgba(31,111,235,0.1);border:1px solid rgba(31,111,235,0.25);">🚚</div>
+      <div>
+        <p class="font-barlow font-700 text-white text-base tracking-wide">Outside Dhaka</p>
+        <p class="font-dm text-gray-400 text-sm mt-0.5">Delivered within <span class="text-white font-500">2–4 days</span></p>
+        <div class="mt-2 inline-flex items-center gap-1 rounded-lg px-3 py-1" style="background:rgba(31,111,235,0.08);border:1px solid rgba(31,111,235,0.2);">
+          <span class="font-archivo text-rs-blue-lt text-sm">৳ 120</span>
+          <span class="font-dm text-gray-500 text-xs">delivery charge</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="delivery-card">
+      <div class="delivery-icon" style="background:rgba(255,180,0,0.1);border:1px solid rgba(255,180,0,0.25);">💵</div>
+      <div>
+        <p class="font-barlow font-700 text-white text-base tracking-wide">Cash on Delivery</p>
+        <p class="font-dm text-gray-400 text-sm mt-0.5">Pay when you <span class="text-white font-500">receive your order</span></p>
+        <div class="mt-2 inline-flex items-center gap-1 rounded-lg px-3 py-1" style="background:rgba(255,180,0,0.08);border:1px solid rgba(255,180,0,0.2);">
+          <span class="font-dm text-rs-amber text-xs font-600">Available Nationwide</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     TRUST / INSTAGRAM BAR
+═════════════════════════════════════════════ -->
+<section class="px-4 max-w-lg mx-auto mt-10">
+  <div class="text-center mb-6">
+    <span class="section-label block mb-1">Follow Us</span>
+    <h2 class="font-archivo text-white text-2xl uppercase tracking-tight">Our Community</h2>
+    <p class="font-dm text-gray-500 text-sm mt-1">60,400+ streetwear heads can't be wrong</p>
+  </div>
+
+  <div class="flex flex-col gap-3">
+    <a href="https://www.instagram.com/rs_accessories__" target="_blank" class="insta-card">
+      <div class="insta-avatar">📸</div>
+      <div class="flex-1">
+        <p class="font-barlow font-700 text-white text-base tracking-wide">@rs_accessories__</p>
+        <p class="font-dm text-gray-400 text-sm">RS Accessories — Chains, Rings &amp; More</p>
+        <p class="font-dm text-xs mt-1" style="color:#cc2366;">
+          <span class="font-700 text-white">46.6k</span> Followers
+        </p>
+      </div>
+      <span class="text-gray-600 text-lg">→</span>
+    </a>
+
+    <a href="https://www.instagram.com/retro_star_bd" target="_blank" class="insta-card">
+      <div class="insta-avatar">🌟</div>
+      <div class="flex-1">
+        <p class="font-barlow font-700 text-white text-base tracking-wide">@retro_star_bd</p>
+        <p class="font-dm text-gray-400 text-sm">Retro Star — Streetwear &amp; Style</p>
+        <p class="font-dm text-xs mt-1" style="color:#cc2366;">
+          <span class="font-700 text-white">13.8k</span> Followers
+        </p>
+      </div>
+      <span class="text-gray-600 text-lg">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     CONTACT SECTION
+═════════════════════════════════════════════ -->
+<section class="px-4 max-w-lg mx-auto mt-10">
+  <span class="section-label block mb-1">Get In Touch</span>
+  <h2 class="font-archivo text-white text-2xl uppercase tracking-tight mb-5">Contact Us</h2>
+
+  <div class="flex flex-col gap-3">
+    <a href="tel:01716854585" class="contact-item">
+      <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style="background:rgba(31,111,235,0.1);border:1px solid rgba(31,111,235,0.2);">📞</div>
+      <div>
+        <p class="font-dm text-gray-500 text-xs uppercase tracking-widest mb-0.5">Phone</p>
+        <p class="font-barlow font-700 text-white text-base">01716-854585 / 01575-614890</p>
+      </div>
+    </a>
+    <a href="mailto:retrostaraccessories@gmail.com" class="contact-item">
+      <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style="background:rgba(57,255,135,0.08);border:1px solid rgba(57,255,135,0.18);">✉️</div>
+      <div>
+        <p class="font-dm text-gray-500 text-xs uppercase tracking-widest mb-0.5">Email</p>
+        <p class="font-barlow font-700 text-white text-sm">retrostaraccessories@gmail.com</p>
+        <p class="font-dm text-gray-500 text-xs">retrostarbd148@gmail.com</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     FOOTER
+═════════════════════════════════════════════ -->
+<footer class="px-4 max-w-lg mx-auto mt-12 pb-6 text-center border-t border-rs-border pt-8">
+  <div class="font-archivo text-white text-xl uppercase tracking-wide mb-1">RETRO STAR</div>
+  <div class="font-dm text-gray-500 text-xs mb-4">RS Accessories · Dhaka, Bangladesh</div>
+  <div class="flex justify-center gap-4 mb-5">
+    <a href="https://www.instagram.com/rs_accessories__" target="_blank" class="text-gray-600 hover:text-white transition-colors text-sm font-dm">@rs_accessories__</a>
+    <span class="text-rs-border">·</span>
+    <a href="https://www.instagram.com/retro_star_bd" target="_blank" class="text-gray-600 hover:text-white transition-colors text-sm font-dm">@retro_star_bd</a>
+  </div>
+  <div class="font-dm text-gray-600 text-xs">
+    Designed by <span class="text-gray-400 font-500">init.io</span>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════════
+     STICKY WHATSAPP FOOTER
+═════════════════════════════════════════════ -->
+<div class="sticky-wa">
+  <div class="max-w-lg mx-auto">
+    <a href="https://wa.me/8801716854585?text=Hi!%20I%20want%20to%20place%20an%20order%20from%20Retro%20Star%20Catalog" target="_blank" class="wa-btn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.553 4.1 1.524 5.823L.057 23.486a.5.5 0 0 0 .614.614l5.701-1.461A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.6 9.6 0 0 1-5.015-1.408l-.361-.214-3.741.959.988-3.698-.234-.378A9.6 9.6 0 0 1 2.4 12c0-5.29 4.31-9.6 9.6-9.6s9.6 4.31 9.6 9.6-4.31 9.6-9.6 9.6z"/></svg>
+      Chat with Us on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SIZE GUIDE MODAL
+═════════════════════════════════════════════ -->
+<div id="sizeModal" onclick="handleModalClick(event)">
+  <div class="modal-sheet" id="modalSheet">
+    <div class="flex items-center justify-between mb-5">
+      <div>
+        <span class="section-label block mb-0.5">Retro Star</span>
+        <h3 class="font-archivo text-white text-xl uppercase">Size Guide</h3>
+      </div>
+      <button onclick="closeModal()" class="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors" style="background:#222230;border:none;cursor:pointer;">✕</button>
+    </div>
+
+    <!-- Tees Table -->
+    <p class="font-barlow font-700 text-rs-blue-lt text-sm tracking-widest uppercase mb-2">Oversized Tees</p>
+    <table class="size-table mb-5">
+      <thead>
+        <tr><th>Size</th><th>Chest (inch)</th><th>Length (inch)</th><th>Shoulder (inch)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="text-white font-barlow font-700">S</td><td>42"</td><td>28"</td><td>19"</td></tr>
+        <tr><td class="text-white font-barlow font-700">M</td><td>44"</td><td>29"</td><td>20"</td></tr>
+        <tr><td class="text-white font-barlow font-700">L</td><td>46"</td><td>30"</td><td>21"</td></tr>
+        <tr><td class="text-white font-barlow font-700">XL</td><td>48"</td><td>31"</td><td>22"</td></tr>
+        <tr><td class="text-white font-barlow font-700">2XL</td><td>50"</td><td>32"</td><td>23"</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Chains Note -->
+    <div class="rounded-xl p-4 mb-4" style="background:rgba(57,255,135,0.06);border:1px solid rgba(57,255,135,0.18);">
+      <p class="font-barlow font-700 text-rs-neon text-sm tracking-widest uppercase mb-1">Chains & Accessories</p>
+      <p class="font-dm text-gray-400 text-sm">All chains come in standard lengths. Custom sizing available — just ask on WhatsApp!</p>
+    </div>
+
+    <a href="https://wa.me/8801716854585?text=Hi!%20I%20need%20help%20with%20sizing" target="_blank" class="btn-quickbuy" style="border-radius:10px;">
+      Ask About Sizing on WhatsApp
+    </a>
+  </div>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById('sizeModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('sizeModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function handleModalClick(e) {
+    if (e.target === document.getElementById('sizeModal')) closeModal();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // Filter Pills
+  document.querySelectorAll('.filter-pill').forEach(pill => {
+    pill.addEventListener('click', function() {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
